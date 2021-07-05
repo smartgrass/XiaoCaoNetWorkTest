@@ -1,0 +1,9 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\smart grass\\.dotnet\\store\\|arch|\\|tfm|",
+      "D:\\Program Files (x86)\\Nuget\\.nuget",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ]
+  }
+}

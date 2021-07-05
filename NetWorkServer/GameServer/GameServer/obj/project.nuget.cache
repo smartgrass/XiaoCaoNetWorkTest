@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "QbuCz+SM0C+Uqy0cdFnwxAzwlfajGWB057E0jsXsB96vPeBUHNUH0eUlEuVO+T+S5SX2GlVx3Ff3BjXfnU5ing==",
+  "success": true,
+  "projectFilePath": "E:\\MyApplication2\\XiaoCaoNetWork\\NetWorkServer\\GameServer\\GameServer\\GameServer.csproj",
+  "expectedPackageFiles": [
+    "D:\\Program Files (x86)\\Nuget\\.nuget\\google.protobuf\\3.17.3\\google.protobuf.3.17.3.nupkg.sha512",
+    "D:\\Program Files (x86)\\Nuget\\.nuget\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "D:\\Program Files (x86)\\Nuget\\.nuget\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512"
+  ],
+  "logs": []
+}
