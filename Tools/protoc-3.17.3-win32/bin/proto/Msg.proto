@@ -1,0 +1,32 @@
+syntax = "proto3";
+enum MsgWayEnum
+{
+	SEEND = 0;
+	REQUES = 1;
+}
+enum MsgTypeEnum
+{
+	NONE = 0;
+	POS = 1;
+	OTHER = 2;
+	LOGIN = 3;
+}
+
+message BaseMsg {
+    int32 MsgTypeEnum = 1;
+	int32 MsgWayEnum = 2;
+	int32 PlayerId = 3;
+    bytes ContextBytes = 4;
+} 
+
+message PosPlayerMsg {
+    int32 playerId = 1;
+	PosMsg Pos = 2;
+} 
+
+
+message PosMsg {
+    float x = 1;
+	float y = 2;
+    float z = 3;
+} 

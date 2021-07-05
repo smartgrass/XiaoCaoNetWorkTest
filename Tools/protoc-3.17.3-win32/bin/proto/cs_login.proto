@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message CSLoginInfo
+{
+	string UserName = 1;//账号
+	int32 PlayerID = 2;
+	string Password = 3;//密码
+}
+
+//发送登录请求
+message CSLoginReq
+{
+	CSLoginInfo LoginInfo = 1; 
+}
+//登录请求回包数据
+message CSLoginRes
+{
+	uint32 result_code = 1; 
+}
