@@ -7,7 +7,8 @@ using Google.Protobuf;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Numerics;
+using System.Threading.Tasks;
 
 class GameSerever
 {
@@ -37,11 +38,13 @@ class GameSerever
         while (true)
         {
 
+            
         }
 
         Console.WriteLine("SERVER : 退出 ---");
         // server.Stop();
     }
+
     private static void BeginAccept()
     {
         listener.BeginAcceptTcpClient(clientConnected, listener);
@@ -100,6 +103,22 @@ class GameSerever
         client.Close();
     }
 
+
+    private static async void SendPlayerList()
+    {
+        while (true)
+        {
+            await Task.Delay(20);
+
+            
+
+            //CallAllClient();
+        }
+    }
+
+
+
+
     private static byte[] ReciveBytes(TcpClient client, byte[] recvData, int myRequestLength)
     {
         if (recvData != null)
@@ -119,7 +138,7 @@ class GameSerever
                 AddConectClient(new PlayerClient(client, loginInfo.UserName, loginInfo.PlayerID));
                 Console.WriteLine($"yns {loginInfo.PlayerID} conected....");
                 //转发消息给其他客户端
-                //CallAllClient(baseMsg);
+                CallOtherClient(baseMsg);
             }
         }
         return recvData;
@@ -181,6 +200,8 @@ public class PlayerClient
     public string playerName = "";
     public TcpClient client;
     public int playerID;
+    public Vector3 pos;
+    public int ground;
 
 }
 public static class ExtensionClass
