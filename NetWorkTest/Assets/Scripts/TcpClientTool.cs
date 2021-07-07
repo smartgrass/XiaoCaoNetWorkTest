@@ -113,7 +113,6 @@ public class TcpClientTool :MonoBehaviour
     {
         try
         {
-            Debug.Log("yns  callBack");
             if (socket == null | socket.Connected == false) return;
             int len = socket.EndReceive(ar);
             if(len == 0)
@@ -135,7 +134,7 @@ public class TcpClientTool :MonoBehaviour
         {
             recvData = recvData.RemoveEmptyByte(myRequestLength);
             BaseMsg baseMsg = BaseMsg.Parser.ParseFrom(recvData);
-
+            Debug.Log("yns  callBack " +((MsgTypeEnum)baseMsg.MsgTypeEnum).ToString());
             if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Pos)
             {
                 //转发消息给其他客户端

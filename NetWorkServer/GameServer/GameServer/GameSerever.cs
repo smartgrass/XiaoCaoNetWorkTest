@@ -18,6 +18,8 @@ class GameSerever
     private static Dictionary<int, PlayerClient> playerClientDic = new Dictionary<int, PlayerClient>();
     private static List<PlayerClient> playerClients = new List<PlayerClient>();
 
+    private static AllPosMsg allPosMsg = new AllPosMsg();
+
     static void Main(string[] args)
     {
 
@@ -35,10 +37,11 @@ class GameSerever
         BeginAccept();
         Console.WriteLine("SERVER : 等待数据 ---");
 
+        SendPlayerList();
+
         while (true)
         {
-
-            
+            Thread.Sleep(100);
         }
 
         Console.WriteLine("SERVER : 退出 ---");
@@ -108,11 +111,11 @@ class GameSerever
     {
         while (true)
         {
-            await Task.Delay(20);
-
+            await Task.Delay(200);
+            
             
 
-            //CallAllClient();
+            CallAllClient(MakeBaseMsg(allPosMsg,MsgTypeEnum.Other));
         }
     }
 
@@ -138,7 +141,7 @@ class GameSerever
                 AddConectClient(new PlayerClient(client, loginInfo.UserName, loginInfo.PlayerID));
                 Console.WriteLine($"yns {loginInfo.PlayerID} conected....");
                 //转发消息给其他客户端
-                CallOtherClient(baseMsg);
+                //CallOtherClient(baseMsg);
             }
         }
         return recvData;
@@ -180,6 +183,14 @@ class GameSerever
     }
 
 
+    private static BaseMsg MakeBaseMsg(IMessage message,MsgTypeEnum msgType)
+    {
+        BaseMsg msg = new BaseMsg();
+        msg.MsgTypeEnum = (int)msgType;
+        msg.ContextBytes = message.ToByteString();
+
+        return msg;
+    }
 }//end class
 
 
@@ -195,7 +206,8 @@ public class PlayerClient
     public void SendMsg(BaseMsg baseMsg)
     {
         byte[] bytes = baseMsg.ToByteArray();
-        client.GetStream().Write(bytes);
+        var stream = client.GetStream();
+        if (stream.CanWrite) stream.Write(bytes);
     }
     public string playerName = "";
     public TcpClient client;

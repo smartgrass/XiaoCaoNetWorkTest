@@ -20,6 +20,17 @@ public class MsgReceiver : Singleton<MsgReceiver>
             CSLoginInfo loginInfo = CSLoginInfo.Parser.ParseFrom(baseMsg.ContextBytes.ToByteArray());
             PlayerManager.Instance.CreatPlayer();
         }
+        else if (baseMsg.MsgTypeEnum == ((int)MsgTypeEnum.Other))
+        {
+            AllPosMsg allPos = AllPosMsg.Parser.ParseFrom(baseMsg.ContextBytes.ToByteArray());
+            var list = allPos.PosPlayerMsgList;
+            int len = list.Count;
+            Debug.Log("yns  recive " + len);
+            for (int i = 0; i < len; i++)
+            {
+                Debug.Log("yns  " + list[i].Pos.X);
+            }
+        }
     }
 
     public static void ReciveBaseMsgBytes(byte[] recvData, int myRequestLength)
