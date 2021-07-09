@@ -28,8 +28,9 @@ public static partial class MsgReflection {
           "KAUSFAoDUG9zGAIgASgLMgcuUG9zTXNnIjQKCUFsbFBvc01zZxInChBQb3NQ",
           "bGF5ZXJNc2dMaXN0GAEgAygLMg0uUG9zUGxheWVyTXNnIikKBlBvc01zZxIJ",
           "CgF4GAEgASgCEgkKAXkYAiABKAISCQoBehgDIAEoAiojCgpNc2dXYXlFbnVt",
-          "EgkKBVNFRU5EEAASCgoGUkVRVUVTEAEqNgoLTXNnVHlwZUVudW0SCAoETk9O",
-          "RRAAEgcKA1BPUxABEgkKBU9USEVSEAISCQoFTE9HSU4QA2IGcHJvdG8z"));
+          "EgkKBVNFRU5EEAASCgoGUkVRVUVTEAEqRQoLTXNnVHlwZUVudW0SCAoETk9O",
+          "RRAAEgcKA1BPUxABEgkKBU9USEVSEAISCQoFTE9HSU4QAxINCglBTExQTEFZ",
+          "RVIQBGIGcHJvdG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MsgWayEnum), typeof(global::MsgTypeEnum), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -53,6 +54,7 @@ public enum MsgTypeEnum {
   [pbr::OriginalName("POS")] Pos = 1,
   [pbr::OriginalName("OTHER")] Other = 2,
   [pbr::OriginalName("LOGIN")] Login = 3,
+  [pbr::OriginalName("ALLPLAYER")] Allplayer = 4,
 }
 
 #endregion

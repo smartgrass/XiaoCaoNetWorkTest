@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class MsgReceiver : Singleton<MsgReceiver>
+public class MsgReceiver
 {
-    public static void ReciveBaseMsg(BaseMsg baseMsg)
+    public MsgReceiver(){}
+    public MsgReceiver(int _playID)
     {
+        playID = _playID;
+    }
+
+    public int playID = 123;
+
+
+
+    public void ReciveBaseMsg(BaseMsg baseMsg)
+    {
+        Debug.Log("yns  Recive thread  " + (MsgTypeEnum)baseMsg.MsgTypeEnum);
         if (baseMsg.MsgTypeEnum == ((int)MsgTypeEnum.Pos))
         {
 
@@ -18,22 +30,18 @@ public class MsgReceiver : Singleton<MsgReceiver>
         else if (baseMsg.MsgTypeEnum == ((int)MsgTypeEnum.Login))
         {
             CSLoginInfo loginInfo = CSLoginInfo.Parser.ParseFrom(baseMsg.ContextBytes.ToByteArray());
-            PlayerManager.Instance.CreatPlayer();
+           // PlayerManager.Instance.CreatPlayer();
         }
-        else if (baseMsg.MsgTypeEnum == ((int)MsgTypeEnum.Other))
+        else if (baseMsg.MsgTypeEnum == ((int)MsgTypeEnum.Allplayer))
         {
             AllPosMsg allPos = AllPosMsg.Parser.ParseFrom(baseMsg.ContextBytes.ToByteArray());
-            var list = allPos.PosPlayerMsgList;
-            int len = list.Count;
-            Debug.Log("yns  recive " + len);
-            for (int i = 0; i < len; i++)
-            {
-                Debug.Log("yns  " + list[i].Pos.X);
-            }
+            Debug.Log("yns  " + PlayerManager.Instance.IsUpdatePos);
+            PlayerManager.Instance.SetAllPlayer(allPos); 
         }
+
     }
 
-    public static void ReciveBaseMsgBytes(byte[] recvData, int myRequestLength)
+    public  void ReciveBaseMsgBytes(byte[] recvData, int myRequestLength)
     {
         recvData = recvData.RemoveEmptyByte(myRequestLength);
         BaseMsg baseMsg = BaseMsg.Parser.ParseFrom(recvData);
@@ -55,6 +63,11 @@ public static class ExtensionClass
         return returnByte;
 
     }
+    public static Vector3 ToVec3(this PosPlayerMsg pos)
+    {
+        return new Vector3(pos.Pos.X, pos.Pos.Y, pos.Pos.Z);
+    }
+    //public static Type GetPersonType()
 }
 
 

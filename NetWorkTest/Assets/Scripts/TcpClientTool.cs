@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,7 +31,23 @@ public class TcpClientTool :MonoBehaviour
 
     public bool isConect = true;
 
-    public void SetPlayer(string playerName,int playID)
+    private MsgReceiver m_Receiver;
+    public MsgReceiver Receiver { 
+        get {
+            if (m_Receiver != null) return m_Receiver;
+            else
+            {
+                m_Receiver = new MsgReceiver(playID);
+                return m_Receiver;
+            };
+        }
+        set => m_Receiver = value; 
+    }
+
+    private PlayerManager m_playerManager;
+
+
+public void SetPlayer(string playerName,int playID)
     {
         this.playerName = playerName;
         this.playID = playID;
@@ -39,15 +56,17 @@ public class TcpClientTool :MonoBehaviour
     {
         ip = IPAddress.Parse("127.0.0.1");
         ipEnd = new IPEndPoint(ip, 7777);
+        m_playerManager = PlayerManager.Instance;
         if (socket != null)
             socket.Close();
         try{
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //连接  serverSocket.Connect(ipEnd);
-            IAsyncResult result =  socket.BeginConnect(ipEnd, ConnectCallback, null);
+            IAsyncResult result =  socket.BeginConnect(ipEnd, null, null);
             bool success = result.AsyncWaitHandle.WaitOne(NetConnectTimeout);
             if (success)
             {
+                ConnectCallback();
                 StartReceive();
             }
         }
@@ -60,17 +79,10 @@ public class TcpClientTool :MonoBehaviour
             Debug.Log("DoConnect Exception:" + e.ToString() + "\n");
         }
     }
-    private void ConnectCallback(IAsyncResult ar)
+    private void ConnectCallback()
     {
-        try
-        {
-            Debug.Log("yns  callBack");
-            SendLogin();
-        }
-        catch
-        {
-
-        }
+        m_playerManager.CreatSelfPlayer(playID);
+        SendLogin();
     }
     [Button]
     private void SendLogin()
@@ -81,12 +93,12 @@ public class TcpClientTool :MonoBehaviour
         loginInfo.UserName = playerName;
         SocketSend(MsgHelper.GetSendBaseMsg(loginInfo, MsgTypeEnum.Login, playID));
     }
-    [Button]
-    private void SendPOS()
+
+    public void SendPOS(Vector3 pos)
     {
         PosPlayerMsg posPlayer = new PosPlayerMsg();
         posPlayer.PlayerId = playID;
-        posPlayer.Pos = new PosMsg() { X = 1, Y = 1, Z = 1 };
+        posPlayer.Pos = new PosMsg() { X = pos.x, Y = pos.y, Z = pos.z };
         SocketSend(MsgHelper.GetSendBaseMsg(posPlayer, MsgTypeEnum.Pos, playID));
     }
 
@@ -128,27 +140,11 @@ public class TcpClientTool :MonoBehaviour
 
         }
     }
-    private static byte[] ReciveBytes( byte[] recvData, int myRequestLength)
+    private  byte[] ReciveBytes( byte[] recvData, int myRequestLength)
     {
         if (recvData != null)
         {
-            recvData = recvData.RemoveEmptyByte(myRequestLength);
-            BaseMsg baseMsg = BaseMsg.Parser.ParseFrom(recvData);
-            Debug.Log("yns  callBack " +((MsgTypeEnum)baseMsg.MsgTypeEnum).ToString());
-            if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Pos)
-            {
-                //转发消息给其他客户端
-
-
-            }
-            else if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Login)
-            {
-                CSLoginInfo loginInfo = CSLoginInfo.Parser.ParseFrom(baseMsg.ContextBytes);
-
-                Console.WriteLine($"yns {loginInfo.UserName} conected....");
-                //转发消息给其他客户端
- 
-            }
+            Receiver.ReciveBaseMsgBytes(recvData, myRequestLength);
         }
         return recvData;
     }
@@ -157,35 +153,10 @@ public class TcpClientTool :MonoBehaviour
 
     #region Login
 
-    private UnityAction<object> LoginCallBackAct;
-    public Action LoginAct;
     public void Login(int playerID, string pass)
     {
         playID = playerID;
-        LoginAct = () =>
-        {
-            CSLoginInfo loginInfo = new CSLoginInfo()
-            {
-                UserName = "11",
-                Password = pass,
-                PlayerID = playerID
-            };
-            var msg = MsgHelper.GetSendBaseMsg(loginInfo, MsgTypeEnum.Login, loginInfo.PlayerID);
-            SocketSend(msg);
-        };
         InitSocket();
-    }
-    public void AddCallBack(UnityAction<object> callBack)
-    {
-        LoginCallBackAct = callBack;
-    }    
-    public void RemoveCallBack()
-    {
-        LoginCallBackAct = null;
-    }
-    private void LoginCallBack()
-    {
-        LoginCallBackAct.Invoke("11");
     }
 
     #endregion

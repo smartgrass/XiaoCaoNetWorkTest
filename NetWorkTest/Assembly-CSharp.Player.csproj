@@ -58,14 +58,18 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MsgHelper.cs" />
     <Compile Include="Assets\Scripts\cs\Msg.cs" />
+    <Compile Include="Assets\Scripts\Framework\IModel.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Timer\TimerManager.cs" />
     <Compile Include="Assets\Scripts\cs\CsLogin.cs" />
+    <Compile Include="Assets\Scripts\Framework\GameManager.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\PoolManager\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Message\MessageCenter.cs" />
+    <Compile Include="Assets\Scripts\Framework\IGameUpdate.cs" />
     <Compile Include="Assets\Scripts\MsgReceiver.cs" />
     <Compile Include="Assets\Scripts\TcpClientTool.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Extended\CoroutineController.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Timer\Timer.cs" />
+    <Compile Include="Assets\Scripts\Player\PersonModel.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\PoolManager\IPoolObject.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Extended\MethodExtension.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Message\Message.cs" />
@@ -73,11 +77,16 @@
     <Compile Include="Assets\Scripts\Framework\Common\Extended\ResManager.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Extended\EventTriggerListener.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Singleton\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerManager.cs" />
     <Compile Include="Assets\LoginUI.cs" />
+    <Compile Include="Assets\Scripts\Manager\MonoCopy.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Singleton\MonoSingleton.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerModel.cs" />
     <Compile Include="Assets\Scripts\Framework\Common\Extended\EnumLabelDrawer.cs" />
+    <Compile Include="Assets\Scripts\Manager\GameStart.cs" />
     <Compile Include="Assets\Scripts\Framework\TriggerUnityEvent.cs" />
+    <Compile Include="Assets\Scripts\ProjectSetting\PrefabsPath.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Packages\System.Memory.4.5.3\useSharedDesignerContext.txt" />

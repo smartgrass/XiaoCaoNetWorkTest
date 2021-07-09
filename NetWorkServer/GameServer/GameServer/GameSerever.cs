@@ -20,6 +20,7 @@ class GameSerever
 
     private static AllPosMsg allPosMsg = new AllPosMsg();
 
+
     static void Main(string[] args)
     {
 
@@ -76,9 +77,7 @@ class GameSerever
                         int myRequestLength = 0;
                         do
                         {
-                            Console.WriteLine("yns  wait recvData....");
                             myRequestLength = stream.Read(recvData, 0, recvData.Length);
-                            Console.WriteLine("read len " + myRequestLength);
                         }
                         while (stream.DataAvailable);
                         if (myRequestLength == 0) CloseClient(client);
@@ -113,9 +112,7 @@ class GameSerever
         {
             await Task.Delay(200);
             
-            
-
-            CallAllClient(MakeBaseMsg(allPosMsg,MsgTypeEnum.Other));
+            CallAllClient(MakeBaseMsg(allPosMsg,MsgTypeEnum.Allplayer));
         }
     }
 
@@ -131,17 +128,15 @@ class GameSerever
 
             if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Pos)
             {
-                //转发消息给其他客户端
-                CallAllClient(baseMsg);
-
+                PosPlayerMsg msg = PosPlayerMsg.Parser.ParseFrom(baseMsg.ContextBytes);
+                UpdateAllPlayerPos(msg);
             }
             else if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Login)
             {
                 CSLoginInfo loginInfo = CSLoginInfo.Parser.ParseFrom(baseMsg.ContextBytes);
                 AddConectClient(new PlayerClient(client, loginInfo.UserName, loginInfo.PlayerID));
                 Console.WriteLine($"yns {loginInfo.PlayerID} conected....");
-                //转发消息给其他客户端
-                //CallOtherClient(baseMsg);
+                //allPosMsg.PosPlayerMsgList.Add
             }
         }
         return recvData;
@@ -182,7 +177,21 @@ class GameSerever
         playerClientDic[selfID].SendMsg(message);
     }
 
-
+    private static void UpdateAllPlayerPos(PosPlayerMsg msg)
+    {
+        var list = allPosMsg.PosPlayerMsgList;
+        int len = list.Count;
+        for (int i = 0; i < len; i++)
+        {
+            if (list[i].PlayerId == msg.PlayerId)
+            {
+                list[i].Pos = msg.Pos;
+                return;
+            }
+        }
+        Console.WriteLine("add pos " +  msg.PlayerId);
+        list.Add(msg);
+    }
     private static BaseMsg MakeBaseMsg(IMessage message,MsgTypeEnum msgType)
     {
         BaseMsg msg = new BaseMsg();
@@ -227,6 +236,10 @@ public static class ExtensionClass
             returnByte[i] = by[i];
         }
         return returnByte;
-
     }
+    public static Vector3 ToVec3(this PosPlayerMsg pos)
+    {
+        return new Vector3(pos.Pos.X, pos.Pos.Y, pos.Pos.Z);
+    }
+
 }

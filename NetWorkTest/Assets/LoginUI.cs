@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,16 +27,9 @@ public class LoginUI : MonoBehaviour
 
         //TcpClientTool tcpClient = new TcpClientTool(PlayerId.ToString(), PlayerId);
         TcpClientTool tcpClient =  gameObject.AddComponent<TcpClientTool>();
-
-        tcpClient.AddCallBack (LoginCallBack);
+        PlayerManager.Instance.selfClient = tcpClient;
         //单个线程只能连接一个
         tcpClient.Login(PlayerId, pass);
-        //new AsyncCallback(HandleTcpClientAccepted), ar.AsyncState);
-        
-    }
 
-    private void LoginCallBack(object back)
-    {
-        Debug.Log("yns  "+(string)back);
     }
 }
