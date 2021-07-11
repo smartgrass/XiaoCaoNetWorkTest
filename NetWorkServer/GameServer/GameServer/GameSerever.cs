@@ -68,7 +68,7 @@ class GameSerever
                 using (NetworkStream stream = client.GetStream())
                 {
                     //获取
-                    Console.WriteLine("SERVER : 客户端已连接，数据读取中 --- ");
+                    Console.WriteLine("客户端已连接 : " + client.Client.RemoteEndPoint);
                     byte[] recvData;
 
                     while (client.Connected)
