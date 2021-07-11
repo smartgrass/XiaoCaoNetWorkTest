@@ -67,3 +67,5 @@ crashlytics-build.properties
 /NetWorkTest/[Aa]ssets/[Ss]treamingAssets/aa/*
 
 
+NetWorkServer/GameServer/.vs/GameServer/DesignTimeBuild/.dtbcache.v2
+NetWorkServer/GameServer/GameServer/bin/Debug/netcoreapp3.1/GameServer.runtimeconfig.dev.json
