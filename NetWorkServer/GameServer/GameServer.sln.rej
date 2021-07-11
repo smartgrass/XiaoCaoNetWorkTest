@@ -1,0 +1,33 @@
+diff a/NetWorkServer/GameServer/GameServer.sln b/NetWorkServer/GameServer/GameServer.sln	(rejected hunks)
+@@ -1,31 +0,0 @@
+-﻿
+-Microsoft Visual Studio Solution File, Format Version 12.00
+-# Visual Studio Version 16
+-VisualStudioVersion = 16.0.31321.278
+-MinimumVisualStudioVersion = 10.0.40219.1
+-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameServer", "GameServer\GameServer.csproj", "{AA39B6E5-9710-4A26-B42B-63A03B26BD22}"
+-EndProject
+-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClientTest", "GameClientTest\GameClientTest.csproj", "{5AD0780D-7F1B-4EEB-95A5-2A35DB05C34E}"
+-EndProject
+-Global
+-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+-		Debug|Any CPU = Debug|Any CPU
+-		Release|Any CPU = Release|Any CPU
+-	EndGlobalSection
+-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+-		{AA39B6E5-9710-4A26-B42B-63A03B26BD22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+-		{AA39B6E5-9710-4A26-B42B-63A03B26BD22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+-		{AA39B6E5-9710-4A26-B42B-63A03B26BD22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+-		{AA39B6E5-9710-4A26-B42B-63A03B26BD22}.Release|Any CPU.Build.0 = Release|Any CPU
+-		{5AD0780D-7F1B-4EEB-95A5-2A35DB05C34E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+-		{5AD0780D-7F1B-4EEB-95A5-2A35DB05C34E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+-		{5AD0780D-7F1B-4EEB-95A5-2A35DB05C34E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+-		{5AD0780D-7F1B-4EEB-95A5-2A35DB05C34E}.Release|Any CPU.Build.0 = Release|Any CPU
+-	EndGlobalSection
+-	GlobalSection(SolutionProperties) = preSolution
+-		HideSolutionNode = FALSE
+-	EndGlobalSection
+-	GlobalSection(ExtensibilityGlobals) = postSolution
+-		SolutionGuid = {09B3FB65-0519-43A7-9383-3B43A0EC4D17}
+-	EndGlobalSection
+-EndGlobal
