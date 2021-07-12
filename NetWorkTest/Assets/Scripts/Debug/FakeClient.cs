@@ -10,7 +10,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class FakeClient : MonoBehaviour
+public class FakeClient 
 {
     //常量
     const int NetConnectTimeout = 10000;    //default connect wait milliseconds

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
 {
-    public AllPosMsg allPosMsgLast = new AllPosMsg();
-    public  AllPosMsg allPosMsg = new AllPosMsg();
+    public AllPosMsg allPosMsgLast;
+    public AllPosMsg allPosMsg;
 
     public bool IsUpdatePos = false;
     public PlayerModel selfPlayer;
@@ -16,7 +16,11 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
 
     public void SetAllPlayer(AllPosMsg _allPosMsg)
     {
-        allPosMsgLast = _allPosMsg;
+
+        if (allPosMsg == null)
+            allPosMsgLast = _allPosMsg;
+        else
+            allPosMsgLast = allPosMsg;
         allPosMsg = _allPosMsg;
     }
 

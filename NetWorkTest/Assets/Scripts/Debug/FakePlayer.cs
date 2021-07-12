@@ -41,7 +41,7 @@ namespace Assets.Scripts.Debug
         {
             var hor = Input.GetAxisRaw("Horizontal"); //左右键
             var ver = Input.GetAxisRaw("Vertical");
-            Vector3 target = transform.position + new Vector3(hor, 0, ver)*Time.deltaTime;
+            Vector3 target = transform.position + new Vector3(hor, 0, ver)*Time.deltaTime*2.5f;
             transform.position = target;
             fake.SendPOS(target);
         }

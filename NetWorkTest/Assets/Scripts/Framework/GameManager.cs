@@ -16,8 +16,7 @@ namespace Player
 
 
         }
-
-        private void Update()
+        private void FixedUpdate()
         {
             int _len = gameUpdates.Count;
             for (int i = 0; i < _len; i++)
