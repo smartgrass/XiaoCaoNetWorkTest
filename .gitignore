@@ -69,3 +69,6 @@ crashlytics-build.properties
 
 NetWorkServer/GameServer/.vs/GameServer/DesignTimeBuild/.dtbcache.v2
 NetWorkServer/GameServer/GameServer/bin/Debug/netcoreapp3.1/GameServer.runtimeconfig.dev.json
+NetWorkServer/GameServer/GameServer/bin/Debug/netcoreapp3.1/GameServer.exe
+NetWorkServer/GameServer/GameServer/bin/Debug/netcoreapp3.1/GameServer.dll
+NetWorkServer/GameServer/GameServer/obj/Debug/netcoreapp3.1/GameServer.dll
