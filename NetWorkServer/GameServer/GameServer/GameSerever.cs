@@ -19,7 +19,7 @@ class GameSerever
     private static List<PlayerClient> playerClients = new List<PlayerClient>();
 
     private static AllPosMsg allPosMsg = new AllPosMsg();
-
+    private static DateTime setUpTime;
 
     static void Main(string[] args)
     {
@@ -36,6 +36,7 @@ class GameSerever
         listener.Start();
         //回调
         BeginAccept();
+        setUpTime = DateTime.Now;
         Console.WriteLine("SERVER : 等待数据 ---");
 
         SendPlayerList();
@@ -129,6 +130,7 @@ class GameSerever
             if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Pos)
             {
                 PosPlayerMsg msg = PosPlayerMsg.Parser.ParseFrom(baseMsg.ContextBytes);
+                msg.SendTiem = GetTime();
                 UpdateAllPlayerPos(msg);
             }
             else if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Login)
@@ -200,6 +202,12 @@ class GameSerever
 
         return msg;
     }
+    private static float GetTime()
+    {
+        TimeSpan time = DateTime.Now - setUpTime;
+        return (float)time.TotalSeconds;
+    }
+
 }//end class
 
 

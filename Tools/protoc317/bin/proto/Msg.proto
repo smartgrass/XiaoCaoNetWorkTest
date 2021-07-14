@@ -10,6 +10,7 @@ enum MsgTypeEnum
 	POS = 1;
 	OTHER = 2;
 	LOGIN = 3;
+	Allplayer =4;
 }
 
 message BaseMsg {
@@ -21,7 +22,8 @@ message BaseMsg {
 
 message PosPlayerMsg {
     int32 playerId = 1;
-	PosMsg Pos = 2;
+	float sendTiem =2;
+	PosMsg Pos = 3;
 } 
 
 message AllPosMsg{

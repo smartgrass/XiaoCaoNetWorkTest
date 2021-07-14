@@ -12,7 +12,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
     public PlayerModel selfPlayer;
     public TcpClientTool selfClient;
     public Dictionary<int, PlayerModel> allPlayerDic = new Dictionary<int, PlayerModel>();
-    
+    public float reciveTime = 0;
 
     public void SetAllPlayer(AllPosMsg _allPosMsg)
     {
@@ -22,6 +22,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
         else
             allPosMsgLast = allPosMsg;
         allPosMsg = _allPosMsg;
+        reciveTime = Time.time;
     }
 
 
@@ -47,7 +48,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
 
     public void GameUpdate()
     {
-        if (IsUpdatePos)
+        if (IsUpdatePos && allPosMsg !=null&& allPosMsg.PosPlayerMsgList != null)
         {
             int len = allPosMsg.PosPlayerMsgList.Count;
             Debug.Log("yns  all pos len " + len);
@@ -58,13 +59,13 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
                 if (allPlayerDic.ContainsKey(pos.PlayerId))
                 {
                     if (selfPlayer.playerID != pos.PlayerId)
-                        allPlayerDic[pos.PlayerId].SetPos(pos.ToVec3(), lastPos.ToVec3());
+                        allPlayerDic[pos.PlayerId].SetPos(pos, lastPos);
                 }
                 else
                 {
                     //添加新玩家
                     CreatOtherPlayer(pos.PlayerId);
-                    allPlayerDic[pos.PlayerId].SetPos(pos.ToVec3(), lastPos.ToVec3());
+                    allPlayerDic[pos.PlayerId].SetPos(pos, lastPos);
 
                 }
             }

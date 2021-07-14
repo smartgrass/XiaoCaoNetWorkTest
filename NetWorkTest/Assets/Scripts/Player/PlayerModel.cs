@@ -11,23 +11,21 @@ namespace Player
         public TcpClientTool client;
 
         public int playerID;
-        private float lastTime =0 ;
         private float deltaTime = 0.02f;
-        
+        private float lastTime;
 
         public Vector3 Pos { get => View.transform.position; }
 
-        public void SetPos(Vector3 pos,Vector3 lastPos)
+        public void SetPos(PosPlayerMsg pos, PosPlayerMsg lastPos)
         {
-            if(lastTime != 0)
-                deltaTime = Time.time - lastTime;
-            lastTime = Time.time;
+            lastTime = PlayerManager.Instance.reciveTime;
+            float deltaT = Time.time - lastTime;
+            float timeLen = pos.SendTiem - lastPos.SendTiem;
+            float lerp = Mathf.Clamp(deltaT / timeLen, 0.1f, 0.8f);
+            Debug.Log("yns  lerp " + lerp) ;
             //lastP
-            var dis = Vector3.Distance(View.transform.position, pos);
-            var speed = dis / deltaTime;
-            var dir = (pos - View.transform.position ).normalized;
-            var target = View.transform.position + dir * speed * deltaTime;
-            View.transform.position = Vector3.Lerp(View.transform.position, target, 0.25f);
+            var target = pos.ToVec3();
+            View.transform.position = Vector3.Lerp(View.transform.position, target, lerp);
 
         }
         public void SendPos()
