@@ -35,7 +35,7 @@ public class MsgReceiver
         else if (baseMsg.MsgTypeEnum == ((int)MsgTypeEnum.Allplayer))
         {
             AllPosMsg allPos = AllPosMsg.Parser.ParseFrom(baseMsg.ContextBytes.ToByteArray());
-            Debug.Log("yns  " + PlayerManager.Instance.IsUpdatePos);
+            //Debug.Log("yns  " + PlayerManager.Instance.IsUpdatePos);
             PlayerManager.Instance.SetAllPlayer(allPos); 
         }
 

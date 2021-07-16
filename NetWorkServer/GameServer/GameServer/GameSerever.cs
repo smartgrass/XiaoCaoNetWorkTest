@@ -130,7 +130,7 @@ class GameSerever
             if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Pos)
             {
                 PosPlayerMsg msg = PosPlayerMsg.Parser.ParseFrom(baseMsg.ContextBytes);
-                msg.SendTiem = GetTime();
+                msg.SendTime = GetTime();
                 UpdateAllPlayerPos(msg);
             }
             else if (baseMsg.MsgTypeEnum == (int)MsgTypeEnum.Login)
@@ -202,10 +202,10 @@ class GameSerever
 
         return msg;
     }
-    private static float GetTime()
+    private static long GetTime()
     {
         TimeSpan time = DateTime.Now - setUpTime;
-        return (float)time.TotalSeconds;
+        return time.Ticks;
     }
 
 }//end class

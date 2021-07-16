@@ -123,28 +123,28 @@ public void SetPlayer(string playerName,int playID)
 
     private  void ReceiveCallback(IAsyncResult ar)
     {
-        try
-        {
-            if (socket == null | socket.Connected == false) return;
-            int len = socket.EndReceive(ar);
-            if(len == 0)
-            {
-                CloseSocket();
-            }
-            
-            ReciveBytes(recvData, len);
-            StartReceive();
-        }
-        catch
-        {
 
+        if (socket == null | socket.Connected == false) return;
+        int len = socket.EndReceive(ar);
+        if(len == 0)
+        {
+            CloseSocket();
         }
+        ReciveBytes(recvData, len);    
+        StartReceive();
     }
     private  byte[] ReciveBytes( byte[] recvData, int myRequestLength)
     {
         if (recvData != null)
         {
-            Receiver.ReciveBaseMsgBytes(recvData, myRequestLength);
+            try
+            {
+                Receiver.ReciveBaseMsgBytes(recvData, myRequestLength);
+            }
+            catch(Exception e)
+            {
+                Debug.Log("yns  Exception" + e);
+            }
         }
         return recvData;
     }

@@ -22,8 +22,9 @@ message BaseMsg {
 
 message PosPlayerMsg {
     int32 playerId = 1;
-	float sendTiem =2;
-	PosMsg Pos = 3;
+	int64 sendTime =2;
+	int64 reciveTime = 3;
+	PosMsg Pos = 4;
 } 
 
 message AllPosMsg{

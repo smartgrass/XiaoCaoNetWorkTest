@@ -2,27 +2,24 @@
 using UnityEngine;
 using Player;
 using System.Collections.Generic;
+using System;
 
 public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
 {
-    public AllPosMsg allPosMsgLast;
     public AllPosMsg allPosMsg;
 
     public bool IsUpdatePos = false;
     public PlayerModel selfPlayer;
     public TcpClientTool selfClient;
     public Dictionary<int, PlayerModel> allPlayerDic = new Dictionary<int, PlayerModel>();
-    public float reciveTime = 0;
+    public long reciveTime = 0;
 
     public void SetAllPlayer(AllPosMsg _allPosMsg)
     {
-
-        if (allPosMsg == null)
-            allPosMsgLast = _allPosMsg;
-        else
-            allPosMsgLast = allPosMsg;
         allPosMsg = _allPosMsg;
-        reciveTime = Time.time;
+        reciveTime = DateTime.Now.Ticks;
+        //selfPlayer.SaveLastPos();
+       // Debug.Log("yns  set reciveTime " + reciveTime);
     }
 
 
@@ -32,6 +29,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
         Debug.Log("Creat player");
         selfPlayer = game.AddComponent<PlayerComponent>().Init(playerID);
         selfPlayer.client = selfClient;
+        selfPlayer.manager = this;
         allPlayerDic.Add(playerID, selfPlayer);
         IsUpdatePos = true;
     }
@@ -41,6 +39,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
         game.name = ("otherPlayer"+ playerID);
         Debug.Log("Creat other player");
         var otherPlayer = game.AddComponent<PlayerComponent>().Init(playerID);
+        otherPlayer.manager = this;
         allPlayerDic.Add(playerID, otherPlayer);
         return playerID;
     }
@@ -55,17 +54,16 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
             for (int i = 0; i < len; i++)
             {
                 var pos = allPosMsg.PosPlayerMsgList[i];
-                var lastPos = allPosMsgLast.PosPlayerMsgList[i];
                 if (allPlayerDic.ContainsKey(pos.PlayerId))
                 {
                     if (selfPlayer.playerID != pos.PlayerId)
-                        allPlayerDic[pos.PlayerId].SetPos(pos, lastPos);
+                        allPlayerDic[pos.PlayerId].SetPos(pos);
                 }
                 else
                 {
                     //添加新玩家
                     CreatOtherPlayer(pos.PlayerId);
-                    allPlayerDic[pos.PlayerId].SetPos(pos, lastPos);
+                    allPlayerDic[pos.PlayerId].SetPos(pos);
 
                 }
             }

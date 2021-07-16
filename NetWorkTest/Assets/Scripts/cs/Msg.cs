@@ -24,18 +24,19 @@ public static partial class MsgReflection {
         string.Concat(
           "CglNc2cucHJvdG8iWgoHQmFzZU1zZxITCgtNc2dUeXBlRW51bRgBIAEoBRIS",
           "CgpNc2dXYXlFbnVtGAIgASgFEhAKCFBsYXllcklkGAMgASgFEhQKDENvbnRl",
-          "eHRCeXRlcxgEIAEoDCJICgxQb3NQbGF5ZXJNc2cSEAoIcGxheWVySWQYASAB",
-          "KAUSEAoIc2VuZFRpZW0YAiABKAISFAoDUG9zGAMgASgLMgcuUG9zTXNnIjQK",
-          "CUFsbFBvc01zZxInChBQb3NQbGF5ZXJNc2dMaXN0GAEgAygLMg0uUG9zUGxh",
-          "eWVyTXNnIikKBlBvc01zZxIJCgF4GAEgASgCEgkKAXkYAiABKAISCQoBehgD",
-          "IAEoAiojCgpNc2dXYXlFbnVtEgkKBVNFRU5EEAASCgoGUkVRVUVTEAEqRQoL",
-          "TXNnVHlwZUVudW0SCAoETk9ORRAAEgcKA1BPUxABEgkKBU9USEVSEAISCQoF",
-          "TE9HSU4QAxINCglBbGxwbGF5ZXIQBGIGcHJvdG8z"));
+          "eHRCeXRlcxgEIAEoDCJcCgxQb3NQbGF5ZXJNc2cSEAoIcGxheWVySWQYASAB",
+          "KAUSEAoIc2VuZFRpbWUYAiABKAMSEgoKcmVjaXZlVGltZRgDIAEoAxIUCgNQ",
+          "b3MYBCABKAsyBy5Qb3NNc2ciNAoJQWxsUG9zTXNnEicKEFBvc1BsYXllck1z",
+          "Z0xpc3QYASADKAsyDS5Qb3NQbGF5ZXJNc2ciKQoGUG9zTXNnEgkKAXgYASAB",
+          "KAISCQoBeRgCIAEoAhIJCgF6GAMgASgCKiMKCk1zZ1dheUVudW0SCQoFU0VF",
+          "TkQQABIKCgZSRVFVRVMQASpFCgtNc2dUeXBlRW51bRIICgROT05FEAASBwoD",
+          "UE9TEAESCQoFT1RIRVIQAhIJCgVMT0dJThADEg0KCUFsbHBsYXllchAEYgZw",
+          "cm90bzM="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MsgWayEnum), typeof(global::MsgTypeEnum), }, null, new pbr::GeneratedClrTypeInfo[] {
           new pbr::GeneratedClrTypeInfo(typeof(global::BaseMsg), global::BaseMsg.Parser, new[]{ "MsgTypeEnum", "MsgWayEnum", "PlayerId", "ContextBytes" }, null, null, null, null),
-          new pbr::GeneratedClrTypeInfo(typeof(global::PosPlayerMsg), global::PosPlayerMsg.Parser, new[]{ "PlayerId", "SendTiem", "Pos" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::PosPlayerMsg), global::PosPlayerMsg.Parser, new[]{ "PlayerId", "SendTime", "ReciveTime", "Pos" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::AllPosMsg), global::AllPosMsg.Parser, new[]{ "PosPlayerMsgList" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::PosMsg), global::PosMsg.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null)
         }));
@@ -395,7 +396,8 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public PosPlayerMsg(PosPlayerMsg other) : this() {
     playerId_ = other.playerId_;
-    sendTiem_ = other.sendTiem_;
+    sendTime_ = other.sendTime_;
+    reciveTime_ = other.reciveTime_;
     pos_ = other.pos_ != null ? other.pos_.Clone() : null;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
@@ -418,20 +420,32 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
     }
   }
 
-  /// <summary>Field number for the "sendTiem" field.</summary>
-  public const int SendTiemFieldNumber = 2;
-  private float sendTiem_;
+  /// <summary>Field number for the "sendTime" field.</summary>
+  public const int SendTimeFieldNumber = 2;
+  private long sendTime_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public float SendTiem {
-    get { return sendTiem_; }
+  public long SendTime {
+    get { return sendTime_; }
     set {
-      sendTiem_ = value;
+      sendTime_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "reciveTime" field.</summary>
+  public const int ReciveTimeFieldNumber = 3;
+  private long reciveTime_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public long ReciveTime {
+    get { return reciveTime_; }
+    set {
+      reciveTime_ = value;
     }
   }
 
   /// <summary>Field number for the "Pos" field.</summary>
-  public const int PosFieldNumber = 3;
+  public const int PosFieldNumber = 4;
   private global::PosMsg pos_;
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -458,7 +472,8 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
       return true;
     }
     if (PlayerId != other.PlayerId) return false;
-    if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(SendTiem, other.SendTiem)) return false;
+    if (SendTime != other.SendTime) return false;
+    if (ReciveTime != other.ReciveTime) return false;
     if (!object.Equals(Pos, other.Pos)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
@@ -468,7 +483,8 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
   public override int GetHashCode() {
     int hash = 1;
     if (PlayerId != 0) hash ^= PlayerId.GetHashCode();
-    if (SendTiem != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(SendTiem);
+    if (SendTime != 0L) hash ^= SendTime.GetHashCode();
+    if (ReciveTime != 0L) hash ^= ReciveTime.GetHashCode();
     if (pos_ != null) hash ^= Pos.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
@@ -492,12 +508,16 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
       output.WriteRawTag(8);
       output.WriteInt32(PlayerId);
     }
-    if (SendTiem != 0F) {
-      output.WriteRawTag(21);
-      output.WriteFloat(SendTiem);
+    if (SendTime != 0L) {
+      output.WriteRawTag(16);
+      output.WriteInt64(SendTime);
+    }
+    if (ReciveTime != 0L) {
+      output.WriteRawTag(24);
+      output.WriteInt64(ReciveTime);
     }
     if (pos_ != null) {
-      output.WriteRawTag(26);
+      output.WriteRawTag(34);
       output.WriteMessage(Pos);
     }
     if (_unknownFields != null) {
@@ -514,12 +534,16 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
       output.WriteRawTag(8);
       output.WriteInt32(PlayerId);
     }
-    if (SendTiem != 0F) {
-      output.WriteRawTag(21);
-      output.WriteFloat(SendTiem);
+    if (SendTime != 0L) {
+      output.WriteRawTag(16);
+      output.WriteInt64(SendTime);
+    }
+    if (ReciveTime != 0L) {
+      output.WriteRawTag(24);
+      output.WriteInt64(ReciveTime);
     }
     if (pos_ != null) {
-      output.WriteRawTag(26);
+      output.WriteRawTag(34);
       output.WriteMessage(Pos);
     }
     if (_unknownFields != null) {
@@ -535,8 +559,11 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
     if (PlayerId != 0) {
       size += 1 + pb::CodedOutputStream.ComputeInt32Size(PlayerId);
     }
-    if (SendTiem != 0F) {
-      size += 1 + 4;
+    if (SendTime != 0L) {
+      size += 1 + pb::CodedOutputStream.ComputeInt64Size(SendTime);
+    }
+    if (ReciveTime != 0L) {
+      size += 1 + pb::CodedOutputStream.ComputeInt64Size(ReciveTime);
     }
     if (pos_ != null) {
       size += 1 + pb::CodedOutputStream.ComputeMessageSize(Pos);
@@ -556,8 +583,11 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
     if (other.PlayerId != 0) {
       PlayerId = other.PlayerId;
     }
-    if (other.SendTiem != 0F) {
-      SendTiem = other.SendTiem;
+    if (other.SendTime != 0L) {
+      SendTime = other.SendTime;
+    }
+    if (other.ReciveTime != 0L) {
+      ReciveTime = other.ReciveTime;
     }
     if (other.pos_ != null) {
       if (pos_ == null) {
@@ -584,11 +614,15 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
           PlayerId = input.ReadInt32();
           break;
         }
-        case 21: {
-          SendTiem = input.ReadFloat();
+        case 16: {
+          SendTime = input.ReadInt64();
           break;
         }
-        case 26: {
+        case 24: {
+          ReciveTime = input.ReadInt64();
+          break;
+        }
+        case 34: {
           if (pos_ == null) {
             Pos = new global::PosMsg();
           }
@@ -614,11 +648,15 @@ public sealed partial class PosPlayerMsg : pb::IMessage<PosPlayerMsg>
           PlayerId = input.ReadInt32();
           break;
         }
-        case 21: {
-          SendTiem = input.ReadFloat();
+        case 16: {
+          SendTime = input.ReadInt64();
           break;
         }
-        case 26: {
+        case 24: {
+          ReciveTime = input.ReadInt64();
+          break;
+        }
+        case 34: {
           if (pos_ == null) {
             Pos = new global::PosMsg();
           }
