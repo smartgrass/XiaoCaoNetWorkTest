@@ -14,7 +14,8 @@ namespace Player
 
         public int playerID;
         private long lastTime;
-        public Vector3 lastPos;
+        //public Vector3 lastPos;
+        //PosPlayerMsg lastPos;
 
         public Vector3 Pos { get => View.transform.position; }
 
@@ -23,15 +24,14 @@ namespace Player
             lastTime = manager.reciveTime;
             float deltaT =(DateTime.Now.Ticks -lastTime)/10000;
 
-
-            
             //需要上一个位置
 
             float lerp = Mathf.Clamp((deltaT / 200), 0.1f, 0.9f);
 
             Debug.Log("yns   deltal = " + deltaT  + "; lerp " + lerp);
             var target = pos.ToVec3();
-            View.transform.position = Vector3.Lerp(lastPos, target, lerp);
+            View.transform.position = Vector3.Lerp(View.transform.position, target, 0.33f);
+            //View.transform.position = Vector3.Lerp(lastPos, target, lerp);
 
         }
         public void SendPos()

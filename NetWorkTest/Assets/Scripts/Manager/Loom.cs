@@ -1,131 +1,156 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 
-using UnityEngine;
+using UnityEngine;  
+using System.Collections;  
+using System.Collections.Generic;  
+using System;  
+using System.Threading;  
+using System.Linq;  
 
 public class Loom : MonoBehaviour
 {
-    //是否已经初始化
-    static bool isInitialized;
+    public static int maxThreads = 8;
+    static int numThreads;
 
-    private static Loom _ins;
-    public static Loom ins { get { Initialize(); return _ins; } }
-
-    void Awake()
+    private static Loom _current;
+    private int _count;
+    public static Loom Current
     {
-        _ins = this;
-        isInitialized = true;
-    }
-
-    //初始化
-    public static void Initialize()
-    {
-        if (!isInitialized)
+        get
         {
-            if (!Application.isPlaying)
-                return;
-
-            isInitialized = true;
-            var obj = new GameObject("Loom");
-            _ins = obj.AddComponent<Loom>();
-
-            DontDestroyOnLoad(obj);
+            Initialize();
+            return _current;
         }
     }
 
-    //单个执行单元（无延迟）
-    struct NoDelayedQueueItem
+    void Awake()
     {
-        public Action<object> action;
-        public object param;
+        _current = this;
+        initialized = true;
     }
-    //全部执行列表（无延迟）
-    List<NoDelayedQueueItem> listNoDelayActions = new List<NoDelayedQueueItem>();
 
+    static bool initialized;
 
-    //单个执行单元（有延迟）
-    struct DelayedQueueItem
+    static void Initialize()
     {
-        public Action<object> action;
-        public object param;
+        if (!initialized)
+        {
+
+            if (!Application.isPlaying)
+                return;
+            initialized = true;
+            var g = new GameObject("Loom");
+            _current = g.AddComponent<Loom>();
+        }
+
+    }
+
+    private List<Action> _actions = new List<Action>();
+    public struct DelayedQueueItem
+    {
         public float time;
+        public Action action;
     }
-    //全部执行列表（有延迟）
-    List<DelayedQueueItem> listDelayedActions = new List<DelayedQueueItem>();
+    private List<DelayedQueueItem> _delayed = new List<DelayedQueueItem>();
 
+    List<DelayedQueueItem> _currentDelayed = new List<DelayedQueueItem>();
 
-    //加入到主线程执行队列（无延迟）
-    public static void QueueOnMainThread(Action<object> taction, object param)
+    public static void QueueOnMainThread(Action action)
     {
-        QueueOnMainThread(taction, param, 0f);
+        QueueOnMainThread(action, 0f);
     }
-
-    //加入到主线程执行队列（有延迟）
-    public static void QueueOnMainThread(Action<object> action, object param, float time)
+    public static void QueueOnMainThread(Action action, float time)
     {
         if (time != 0)
         {
-            lock (ins.listDelayedActions)
+            lock (Current._delayed)
             {
-                ins.listDelayedActions.Add(new DelayedQueueItem { time = Time.time + time, action = action, param = param });
+                Current._delayed.Add(new DelayedQueueItem { time = Time.time + time, action = action });
             }
         }
         else
         {
-            lock (ins.listNoDelayActions)
+            lock (Current._actions)
             {
-                ins.listNoDelayActions.Add(new NoDelayedQueueItem { action = action, param = param });
+                Current._actions.Add(action);
             }
         }
     }
 
-
-    //当前执行的无延时函数链
-    List<NoDelayedQueueItem> currentActions = new List<NoDelayedQueueItem>();
-    //当前执行的有延时函数链
-    List<DelayedQueueItem> currentDelayed = new List<DelayedQueueItem>();
-
-    void Update()
+    public static Thread RunAsync(Action a)
     {
-        if (listNoDelayActions.Count > 0)
+        Initialize();
+        while (numThreads >= maxThreads)
         {
-            lock (listNoDelayActions)
-            {
-                currentActions.Clear();
-                currentActions.AddRange(listNoDelayActions);
-                listNoDelayActions.Clear();
-            }
-            for (int i = 0; i < currentActions.Count; i++)
-            {
-                currentActions[i].action(currentActions[i].param);
-            }
+            Thread.Sleep(1);
         }
-
-        if (listDelayedActions.Count > 0)
-        {
-            lock (listDelayedActions)
-            {
-                currentDelayed.Clear();
-                currentDelayed.AddRange(listDelayedActions.Where(d => Time.time >= d.time));
-                for (int i = 0; i < currentDelayed.Count; i++)
-                {
-                    listDelayedActions.Remove(currentDelayed[i]);
-                }
-            }
-
-            for (int i = 0; i < currentDelayed.Count; i++)
-            {
-                currentDelayed[i].action(currentDelayed[i].param);
-            }
-        }
+        Interlocked.Increment(ref numThreads);
+        ThreadPool.QueueUserWorkItem(RunAction, a);
+        return null;
     }
+
+    private static void RunAction(object action)
+    {
+        try
+        {
+            ((Action)action)();
+        }
+        catch
+        {
+        }
+        finally
+        {
+            Interlocked.Decrement(ref numThreads);
+        }
+
+    }
+
 
     void OnDisable()
     {
-        if (_ins == this)
+        if (_current == this)
         {
-            _ins = null;
+
+            _current = null;
         }
+    }
+
+
+
+    // Use this for initialization  
+    void Start()
+    {
+
+    }
+
+    List<Action> _currentActions = new List<Action>();
+
+    // Update is called once per frame  
+    void Update()
+    {
+        lock (_actions)
+        {
+            _currentActions.Clear();
+            _currentActions.AddRange(_actions);
+            _actions.Clear();
+        }
+        foreach (var a in _currentActions)
+        {
+            a();
+        }
+        lock (_delayed)
+        {
+            _currentDelayed.Clear();
+            _currentDelayed.AddRange(_delayed.Where(d => d.time <= Time.time));
+            foreach (var item in _currentDelayed)
+                _delayed.Remove(item);
+        }
+        foreach (var delayed in _currentDelayed)
+        {
+            delayed.action();
+        }
+
+
+
     }
 }

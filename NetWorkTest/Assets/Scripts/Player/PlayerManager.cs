@@ -18,8 +18,9 @@ public class PlayerManager : MonoSingleton<PlayerManager>,IGameUpdate
     {
         allPosMsg = _allPosMsg;
         reciveTime = DateTime.Now.Ticks;
-        //selfPlayer.SaveLastPos();
-       // Debug.Log("yns  set reciveTime " + reciveTime);
+
+        //Loom.QueueOnMainThread( ()=>selfPlayer.SaveLastPos());
+        // Debug.Log("yns  set reciveTime " + reciveTime);
     }
 
 
