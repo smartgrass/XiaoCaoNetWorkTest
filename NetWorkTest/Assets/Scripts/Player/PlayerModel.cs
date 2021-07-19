@@ -13,35 +13,49 @@ namespace Player
         public PlayerManager manager;
 
         public int playerID;
-        private long lastTime;
+        private long lastTime = 0;
         //public Vector3 lastPos;
-        //PosPlayerMsg lastPos;
+        PosPlayerMsg lastPos;
+        private Vector3 speedVec= Vector3.zero;
+        private float needTime;
 
         public Vector3 Pos { get => View.transform.position; }
 
         public void SetPos(PosPlayerMsg pos)
         {
-            lastTime = manager.reciveTime;
-            float deltaT =(DateTime.Now.Ticks -lastTime)/10000;
-
-            //需要上一个位置
-
-            float lerp = Mathf.Clamp((deltaT / 200), 0.1f, 0.9f);
-
-            Debug.Log("yns   deltal = " + deltaT  + "; lerp " + lerp);
-            var target = pos.ToVec3();
-            View.transform.position = Vector3.Lerp(View.transform.position, target, 0.33f);
-            //View.transform.position = Vector3.Lerp(lastPos, target, lerp);
-
+            if(lastPos == pos)
+            {
+                //无新包 移动
+                if(speedVec != Vector3.zero)
+                    View.transform.position += speedVec * (Time.fixedDeltaTime / needTime);
+            }
+            else if(lastPos!=null)
+            {
+                //有新包 计算两个包的速度
+                //speedVec = pos.ToVec3() - lastPos.ToVec3();
+                speedVec = pos.ToVec3() - View.transform.position;
+                //4位数是将时间戳转毫秒
+                //7位数是将时间转转为秒
+                needTime = (pos.SendTime - lastPos.SendTime)/ 10000000f;
+                //移动
+                if (speedVec != Vector3.zero)
+                    View.transform.position += speedVec * (Time.fixedDeltaTime / needTime);
+            }
+            else
+            {
+                View.transform.position = pos.ToVec3();
+            }
+            lastPos = pos;
         }
+
         public void SendPos()
         {
             if (client)
                 client.SendPOS(View.transform.position);
         }
-        public void SaveLastPos()
-        {
-            lastPos = View.transform.position;
-        }
+        //public void SaveLastPos()
+        //{
+        //    lastPos = View.transform.position;
+        //}
     }
 }

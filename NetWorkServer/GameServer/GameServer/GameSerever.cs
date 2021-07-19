@@ -112,7 +112,12 @@ class GameSerever
         while (true)
         {
             await Task.Delay(200);
-            
+            long time = DateTime.Now.Ticks;
+            int _len = allPosMsg.PosPlayerMsgList.Count;
+            for (int i = 0; i < _len; i++)
+            {
+                var item = allPosMsg.PosPlayerMsgList[i].SendTime = time;
+            }
             CallAllClient(MakeBaseMsg(allPosMsg,MsgTypeEnum.Allplayer));
         }
     }
