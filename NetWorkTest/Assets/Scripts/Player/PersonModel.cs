@@ -19,6 +19,7 @@ namespace Player
         Player,
         CostomPlayer,
         NPC,
+        Enemy,
 
     }
 
