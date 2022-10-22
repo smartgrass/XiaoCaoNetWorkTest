@@ -1,3 +1,2 @@
 # XiaoCaoNetWork
-XiaoCaoNetWork
-做了点位置同步
+利用protoc, tcp 做了基础位置同步(弱唉
